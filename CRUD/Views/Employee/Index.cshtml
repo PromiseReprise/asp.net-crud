@@ -1,0 +1,67 @@
+﻿@model List<Darbuotojas>
+@{
+    ViewData["Title"] = "CRUD";
+    var aktyvusDarbuotojai = new List<Darbuotojas>();
+    var neaktyvusDarbuotojai = new List<Darbuotojas>();
+}
+
+<div class="text-center">
+    <h1 class="display-4">Darbuotojai</h1>
+</div>
+<div>
+    <h4>Filtruoti aktyvius ir neaktyvius darbuotojus:</h4>
+</div>
+@using (Html.BeginForm("Index", "Employee", FormMethod.Get))
+{
+    <label>@Html.CheckBox("aktyvus") Aktyvūs</label>
+    <label>@Html.CheckBox("neaktyvus") Neaktyvūs</label>
+    <input type="submit" value="Filtruoti" class="btn btn-secondary" />
+}
+<br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Vardas</th>
+            <th>Pavardė</th>
+            <th>Gimimo data</th>
+            <th>Adresas</th>
+            <th>Pareigos</th>
+            <th>Statusas</th>
+            <th>Valdymas</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model)
+        {
+            <tr>
+                <td>@obj.Vardas</td>
+                <td>@obj.Pavarde</td>
+                <td>@obj.GimimoData.ToString("yyyy-MM-dd")</td>
+                <td>@obj.Adresas</td>
+                <td>@foreach (var job in obj.Pareigos)
+                    {
+                        <span>@job.Pareigos</span><br />
+                    }
+                </td>
+                <td>@if(obj.Statusas == 1)
+                    {
+                        <span style="color:forestgreen">Aktyvus</span>
+                    }
+                    else
+                    {
+                        <span style="color:darkred">Neaktyvus</span>
+                    }
+                </td>
+                <td style="width:20%">
+                    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@obj.Id">
+                        <i class="btn btn-warning">Koreguoti</i>
+                    </a>
+                    <a asp-controller="Employee" asp-action="Delete" asp-route-id="@obj.Id">
+                        <i class="btn btn-danger">Pašalinti</i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Pridėti darbuotoja</a>
