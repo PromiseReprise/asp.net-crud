@@ -3,23 +3,22 @@ using CRUD.Models;
 
 namespace CRUD
 {
-    public class Seed
+    public class DuomenuGeneratorius
     {
-        public static void SeedDataContext(IApplicationBuilder applicationBuilder)
+        public static void GeneruotiDuomenis(IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
-                var dataContext = serviceScope.ServiceProvider.GetService<DataContext>();
-                dataContext.Database.EnsureCreated();
-
-                if (!dataContext.Darbuotojai.Any())
+                var duomenuKontekstas = serviceScope.ServiceProvider.GetService<DuomenuKontekstas>();
+                duomenuKontekstas.Database.EnsureCreated();
+                if (!duomenuKontekstas.Darbuotojai.Any())
                 {
                     //Seed Darbuotoju data
-                    dataContext.Darbuotojai.AddRange(new Darbuotojas()
+                    duomenuKontekstas.Darbuotojai.AddRange(new Darbuotojas()
                     {
                         Vardas = "Andrius",
-                        Pavarde = "Maslovas",
-                        GimimoData = new DateTime(1994, 7, 2),
+                        Pavarde = "Lukas",
+                        GimimoData = new DateTime(1999, 2, 7),
                         Adresas = "Sodu g. Vilnius",
                         Pareigos = new List<Pareiga>()
                     {
@@ -31,8 +30,8 @@ namespace CRUD
                     new Darbuotojas()
                     {
                         Vardas = "Lukas",
-                        Pavarde = "Lovas",
-                        GimimoData = new DateTime(1996, 11, 12),
+                        Pavarde = "Andrius",
+                        GimimoData = new DateTime(1999, 12, 11),
                         Adresas = "Petru g. Kaunas",
                         Pareigos = new List<Pareiga>()
                         {
@@ -41,10 +40,9 @@ namespace CRUD
                         Statusas = 1
                     }
                     );
-                    dataContext.SaveChanges();
+                    duomenuKontekstas.SaveChanges();
                 }
             }
         }
-
     }
 }

@@ -1,30 +1,27 @@
 ﻿@model Darbuotojas
 @{
-    ViewData["Title"] = "Pašalinti darbuotoja";
+    ViewData["Title"] = "Koreguoti darbuotoja";
 }
-
-<form asp-controller="Employee" asp-action="DeletePOST" method="post">
-    <input asp-for="Id" hidden />
+<form asp-controller="Darbuotojai" asp-action="Redaguoti" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Vardas" class="control-label">Vardas:</label>
-        <input asp-for="Vardas" class="form-control" disabled />
+        <input asp-for="Vardas" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Pavarde" class="control-label">Pavardė:</label>
-        <input asp-for="Pavarde" class="form-control" disabled />
+        <input asp-for="Pavarde" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="GimimoData" class="control-label">Gimimo Data:</label>
-        <input asp-for="GimimoData" class="form-control" disabled />
+        <input asp-for="GimimoData" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Adresas" class="control-label">Adresas:</label>
-        <input asp-for="Adresas" class="form-control" disabled />
+        <input asp-for="Adresas" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Pareigos" class="control-label">Pareigos:</label>
-
         @foreach (var pareiga in ViewBag.VisosPareigos)
         {
             if (pareiga != null)
@@ -33,7 +30,7 @@
                 {
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="Pareigos" value="@pareiga.Id" checked disabled /> @pareiga.Pareigos
+                            <input type="checkbox" name="Pareigos" value="@pareiga.Id" checked /> @pareiga.Pareigos
                         </label>
                     </div>
                 }
@@ -41,16 +38,14 @@
                 {
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="Pareigos" value="@pareiga.Id" disabled /> @pareiga.Pareigos
+                            <input type="checkbox" name="Pareigos" value="@pareiga.Id" /> @pareiga.Pareigos
                         </label>
                     </div>
                 }
             }
         }
     </div>
-
-    <button type="submit" class="btn btn-danger">Pašalinti</button>
-    <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Gryžti</a>
-
+    <button type="submit" class="btn btn-primary">Koreguoti</button>
+    <a asp-controller="Darbuotojai" asp-action="Pradzia" class="btn btn-secondary">Gryžti</a>
 </form>
 

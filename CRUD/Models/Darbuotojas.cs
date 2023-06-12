@@ -4,7 +4,6 @@ namespace CRUD.Models
 {
     public class Darbuotojas
     {
-
         public int Id { get; set; }
         public string Vardas { get; set; }
         public string Pavarde { get; set; }
@@ -13,8 +12,6 @@ namespace CRUD.Models
         public DateTime GimimoData { get; set; }
         public string Adresas { get; set; }
         public ICollection<Pareiga> Pareigos { get; set;  }
-
         public int Statusas { get; set; }
-
     }
 }

@@ -2,39 +2,34 @@
 using CRUD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 
 namespace CRUD.Controllers
 {
-    public class EmployeeController : Controller
+    public class DarbuotojaiController : Controller
     {
-        private readonly DataContext _db;
-
-        public EmployeeController(DataContext db)
+        private readonly DuomenuKontekstas _db;
+        public DarbuotojaiController(DuomenuKontekstas db)
         {
             _db = db;
         }
 
-        public IActionResult Index(bool? aktyvus, bool? neaktyvus)
+        public IActionResult Pradzia(bool? aktyvus, bool? neaktyvus)
         {
             // Select all Darbuotojai
-            var employees = _db.Darbuotojai.Include(s => s.Pareigos).ToList();
-
+            var darbuotojai = _db.Darbuotojai.Include(s => s.Pareigos).ToList();
             // Check whether checkboxes are null or have value, Select the right Darbuotojai
             if (aktyvus.HasValue && !aktyvus.Value)
             {
-                employees = employees.Where(e => e.Statusas != 1).ToList();
+                darbuotojai = darbuotojai.Where(e => e.Statusas != 1).ToList();
             }
-
             if (neaktyvus.HasValue && !neaktyvus.Value)
             {
-                employees = employees.Where(e => e.Statusas != 0).ToList();
+                darbuotojai = darbuotojai.Where(e => e.Statusas != 0).ToList();
             }
-
-            return View(employees);
+            return View(darbuotojai);
         }
 
-        public IActionResult Create()
+        public IActionResult Sukurti()
         {
             // ViewBag to access all Pareigos that are in Datatable
             ViewBag.VisosPareigos = _db.Pareigos.ToList();
@@ -42,7 +37,7 @@ namespace CRUD.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Darbuotojas obj, int[] Pareigos)
+        public IActionResult Sukurti(Darbuotojas obj, int[] Pareigos)
         {
             if (ModelState.IsValid)
             {
@@ -61,105 +56,93 @@ namespace CRUD.Controllers
                 obj.Statusas = 1;
                 _db.Darbuotojai.Add(obj);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Pradzia");
             }
             ViewBag.VisosPareigos = _db.Pareigos.ToList();
             return View();
         }
 
-        public IActionResult Edit(int? id)
+        public IActionResult Redaguoti(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-
             //Find Darbuotojas
-            var darbuotojasToEdit = _db.Darbuotojai
+            var koreguojamasDarbuotojas = _db.Darbuotojai
                 .Include(x => x.Pareigos)
                 .FirstOrDefault(i => i.Id == id);
-
-            if (darbuotojasToEdit == null)
+            if (koreguojamasDarbuotojas == null)
             {
                 return NotFound();
             }
             ViewBag.VisosPareigos = _db.Pareigos.ToList();
-            return View(darbuotojasToEdit);
+            return View(koreguojamasDarbuotojas);
         }
 
         [HttpPost]
-        public IActionResult Edit(Darbuotojas obj, int[] Pareigos)
+        public IActionResult Redaguoti(Darbuotojas obj, int[] Pareigos)
         {
             if (ModelState.IsValid)
             {
                 // find Darbuotojas and include Pareigos
-                var darbuotojasToEdit = _db.Darbuotojai
+                var koreguojamasDarbuotojas = _db.Darbuotojai
                         .Include(x => x.Pareigos)
                         .FirstOrDefault(i => i.Id == obj.Id);
-
                 // Clear all Pareigos from Darbuotojas to then add selected Pareigos
-                darbuotojasToEdit.Pareigos.Clear();
-
+                koreguojamasDarbuotojas.Pareigos.Clear();
                 if (Pareigos != null)
                 {
                     foreach (var pareigosId in Pareigos)
                     {
                         var pareiga = _db.Pareigos.Find(pareigosId);
-                        darbuotojasToEdit.Pareigos.Add(pareiga);
+                        koreguojamasDarbuotojas.Pareigos.Add(pareiga);
                     }
                 }
-
                 // Need to change this part
-                darbuotojasToEdit.Vardas = obj.Vardas;
-                darbuotojasToEdit.Pavarde = obj.Pavarde;
-                darbuotojasToEdit.GimimoData = obj.GimimoData;
-                darbuotojasToEdit.Adresas = obj.Adresas;
-
-                darbuotojasToEdit.Statusas = 1;
-
+                koreguojamasDarbuotojas.Vardas = obj.Vardas;
+                koreguojamasDarbuotojas.Pavarde = obj.Pavarde;
+                koreguojamasDarbuotojas.GimimoData = obj.GimimoData;
+                koreguojamasDarbuotojas.Adresas = obj.Adresas;
+                koreguojamasDarbuotojas.Statusas = 1;
                 // Update gives an error if trying to push obj
-                _db.Darbuotojai.Update(darbuotojasToEdit);
+                _db.Darbuotojai.Update(koreguojamasDarbuotojas);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Pradzia");
             }
             ViewBag.VisosPareigos = _db.Pareigos.ToList();
             return View();
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Panaikinti(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-
             //Find Darbuotojas
-            var darbuotojasToEdit = _db.Darbuotojai
+            var koreguojamasDarbuotojas = _db.Darbuotojai
                 .Include(x => x.Pareigos)
                 .FirstOrDefault(i => i.Id == id);
-
-            if (darbuotojasToEdit == null)
+            if (koreguojamasDarbuotojas == null)
             {
                 return NotFound();
             }
             ViewBag.VisosPareigos = _db.Pareigos.ToList();
-            return View(darbuotojasToEdit);
+            return View(koreguojamasDarbuotojas);
         }
 
         [HttpPost]
-        public IActionResult DeletePOST(int? id)
+        public IActionResult PanaikintiPOST(int? id)
         {
             var obj = _db.Darbuotojai.Find(id);
-
             if (obj == null)
             {
                 return NotFound();
             }
-
             obj.Statusas = 0;
-
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Pradzia");
         }
     }
 }

@@ -2,8 +2,7 @@
 @{
     ViewData["Title"] = "Pridėti darbuotoja";
 }
-
-<form asp-controller="Employee" asp-action="Create" method="post">
+<form asp-controller="Darbuotojai" asp-action="Sukurti" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Vardas" class="control-label">Vardas:</label>
@@ -32,9 +31,7 @@
             </div>
         }
     </div>
-
     <button type="submit" class="btn btn-primary">Pridėti</button>
-    <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary">Gryžti</a>
-
+    <a asp-controller="Darbuotojai" asp-action="Pradzia" class="btn btn-secondary">Gryžti</a>
 </form>
 

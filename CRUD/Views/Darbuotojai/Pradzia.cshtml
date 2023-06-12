@@ -4,14 +4,13 @@
     var aktyvusDarbuotojai = new List<Darbuotojas>();
     var neaktyvusDarbuotojai = new List<Darbuotojas>();
 }
-
 <div class="text-center">
     <h1 class="display-4">Darbuotojai</h1>
 </div>
 <div>
     <h4>Filtruoti aktyvius ir neaktyvius darbuotojus:</h4>
 </div>
-@using (Html.BeginForm("Index", "Employee", FormMethod.Get))
+@using (Html.BeginForm("Pradzia", "Darbuotojai", FormMethod.Get))
 {
     <label>@Html.CheckBox("aktyvus") Aktyvūs</label>
     <label>@Html.CheckBox("neaktyvus") Neaktyvūs</label>
@@ -53,15 +52,15 @@
                     }
                 </td>
                 <td style="width:20%">
-                    <a asp-controller="Employee" asp-action="Edit" asp-route-id="@obj.Id">
+                    <a asp-controller="Darbuotojai" asp-action="Redaguoti" asp-route-id="@obj.Id">
                         <i class="btn btn-warning">Koreguoti</i>
                     </a>
-                    <a asp-controller="Employee" asp-action="Delete" asp-route-id="@obj.Id">
-                        <i class="btn btn-danger">Pašalinti</i>
+                    <a asp-controller="Darbuotojai" asp-action="Panaikinti" asp-route-id="@obj.Id">
+                        <i class="btn btn-danger">Panaikinti</i>
                     </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Pridėti darbuotoja</a>
+<a asp-controller="Darbuotojai" asp-action="Sukurti" class="btn btn-primary">Pridėti darbuotoja</a>

@@ -3,10 +3,9 @@ using CRUD.Models;
 
 namespace CRUD.Data
 {
-    public class DataContext : DbContext
+    public class DuomenuKontekstas : DbContext
     {
-
-        public DataContext(DbContextOptions<DataContext> options) : base(options) 
+        public DuomenuKontekstas(DbContextOptions<DuomenuKontekstas> options) : base(options) 
         { 
         }
 
