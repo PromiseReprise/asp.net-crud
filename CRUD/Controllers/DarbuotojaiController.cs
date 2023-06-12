@@ -15,9 +15,9 @@ namespace CRUD.Controllers
 
         public IActionResult Pradzia(bool? aktyvus, bool? neaktyvus)
         {
-            // Select all Darbuotojai
+            // Pasirinkti visus Darbuotojus
             var darbuotojai = _db.Darbuotojai.Include(s => s.Pareigos).ToList();
-            // Check whether checkboxes are null or have value, Select the right Darbuotojai
+            // Patikrinti kurie žymimi langeliai turi vertę ir kokią, pasirenkamas tinkamas Darbuotojas
             if (aktyvus.HasValue && !aktyvus.Value)
             {
                 darbuotojai = darbuotojai.Where(e => e.Statusas != 1).ToList();
@@ -31,7 +31,7 @@ namespace CRUD.Controllers
 
         public IActionResult Sukurti()
         {
-            // ViewBag to access all Pareigos that are in Datatable
+            // Naudojamas ViewBag, kad pasiekti visas Pareigas kurios yra duomenų lentelėje
             ViewBag.VisosPareigos = _db.Pareigos.ToList();
             return View();
         }
@@ -43,7 +43,7 @@ namespace CRUD.Controllers
             {
                 if (Pareigos != null)
                 {
-                    // Add selected Pareigos to obj
+                    // Priskirti pasirinktas Pareigas Darbuotojui obj
                     foreach (var pareigosId in Pareigos)
                     {
                         var pareiga = _db.Pareigos.Find(pareigosId);
@@ -68,7 +68,8 @@ namespace CRUD.Controllers
             {
                 return NotFound();
             }
-            //Find Darbuotojas
+
+            //Rasti Darbuotoja
             var koreguojamasDarbuotojas = _db.Darbuotojai
                 .Include(x => x.Pareigos)
                 .FirstOrDefault(i => i.Id == id);
@@ -85,11 +86,11 @@ namespace CRUD.Controllers
         {
             if (ModelState.IsValid)
             {
-                // find Darbuotojas and include Pareigos
+                // Rasti Darbuotoja ir jo Pareigas
                 var koreguojamasDarbuotojas = _db.Darbuotojai
                         .Include(x => x.Pareigos)
                         .FirstOrDefault(i => i.Id == obj.Id);
-                // Clear all Pareigos from Darbuotojas to then add selected Pareigos
+                // Pašalinti visas Darbuotojo Pareigas ir priskirti naujas Pareigas
                 koreguojamasDarbuotojas.Pareigos.Clear();
                 if (Pareigos != null)
                 {
@@ -99,13 +100,14 @@ namespace CRUD.Controllers
                         koreguojamasDarbuotojas.Pareigos.Add(pareiga);
                     }
                 }
-                // Need to change this part
+                // Šią dalį pakeisti
                 koreguojamasDarbuotojas.Vardas = obj.Vardas;
                 koreguojamasDarbuotojas.Pavarde = obj.Pavarde;
                 koreguojamasDarbuotojas.GimimoData = obj.GimimoData;
                 koreguojamasDarbuotojas.Adresas = obj.Adresas;
                 koreguojamasDarbuotojas.Statusas = 1;
-                // Update gives an error if trying to push obj
+
+                // Metodas Update atvaizduoja klaidą, kai yra perduodamas obj kintamasis
                 _db.Darbuotojai.Update(koreguojamasDarbuotojas);
                 _db.SaveChanges();
                 return RedirectToAction("Pradzia");
@@ -120,7 +122,7 @@ namespace CRUD.Controllers
             {
                 return NotFound();
             }
-            //Find Darbuotojas
+            // Rasti Darbuotoja ir jo Pareigas
             var koreguojamasDarbuotojas = _db.Darbuotojai
                 .Include(x => x.Pareigos)
                 .FirstOrDefault(i => i.Id == id);
@@ -135,7 +137,7 @@ namespace CRUD.Controllers
         [HttpPost]
         public IActionResult PanaikintiPOST(int? id)
         {
-            var obj = _db.Darbuotojai.Find(id);
+            var obj = _db.Darbuotojai.FirstOrDefault(x => x.Id == id);
             if (obj == null)
             {
                 return NotFound();

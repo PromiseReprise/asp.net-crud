@@ -1,4 +1,4 @@
-using CRUD;
+﻿using CRUD;
 using CRUD.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +26,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Pradzia}/{action=Pradzia}/{id?}");
 
-// Seed data
+// Sukuriami pirminiai duomenys
 DuomenuGeneratorius.GeneruotiDuomenis(app);
 app.Run();

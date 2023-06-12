@@ -2,26 +2,27 @@
 @{
     ViewData["Title"] = "Pridėti darbuotoja";
 }
-<form asp-controller="Darbuotojai" asp-action="Sukurti" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+@using (Html.BeginForm("Sukurti", "Darbuotojai", FormMethod.Post))
+{
+    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        <label asp-for="Vardas" class="control-label">Vardas:</label>
-        <input asp-for="Vardas" class="form-control" />
+        @Html.LabelFor(m => m.Vardas, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Vardas, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
-        <label asp-for="Pavarde" class="control-label">Pavardė:</label>
-        <input asp-for="Pavarde" class="form-control" />
+        @Html.LabelFor(m => m.Pavarde, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Pavarde, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
-        <label asp-for="GimimoData" class="control-label">Gimimo Data:</label>
-        <input asp-for="GimimoData" class="form-control" />
+        @Html.LabelFor(m => m.GimimoData, new { @class = "control-label" })
+        @Html.EditorFor(m => m.GimimoData, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
-        <label asp-for="Adresas" class="control-label">Adresas:</label>
-        <input asp-for="Adresas" class="form-control" />
+        @Html.LabelFor(m => m.Adresas, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Adresas, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
-        <label asp-for="Pareigos" class="control-label">Pareigos:</label>
+        @Html.LabelFor(m => m.Pareigos, new { @class = "control-label" })
         @foreach (var pareiga in ViewBag.VisosPareigos)
         {
             <div class="checkbox">
@@ -33,5 +34,4 @@
     </div>
     <button type="submit" class="btn btn-primary">Pridėti</button>
     <a asp-controller="Darbuotojai" asp-action="Pradzia" class="btn btn-secondary">Gryžti</a>
-</form>
-
+}

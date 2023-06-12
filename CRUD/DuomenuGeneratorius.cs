@@ -13,7 +13,7 @@ namespace CRUD
                 duomenuKontekstas.Database.EnsureCreated();
                 if (!duomenuKontekstas.Darbuotojai.Any())
                 {
-                    //Seed Darbuotoju data
+                    // Pirminiai duomenys
                     duomenuKontekstas.Darbuotojai.AddRange(new Darbuotojas()
                     {
                         Vardas = "Andrius",

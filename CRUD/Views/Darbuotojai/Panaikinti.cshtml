@@ -2,27 +2,30 @@
 @{
     ViewData["Title"] = "Panaikinti darbuotoja";
 }
-<form asp-controller="Darbuotojai" asp-action="PanaikintiPOST" method="post">
-    <input asp-for="Id" hidden />
-    <div asp-validation-summary="All" class="text-danger"></div>
+
+@using (Html.BeginForm("PanaikintiPOST", "Darbuotojai", FormMethod.Post))
+{
+    // Id reikalingas perduoti į Post metoda
+    @Html.HiddenFor(m => m.Id)
+    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        <label asp-for="Vardas" class="control-label">Vardas:</label>
-        <input asp-for="Vardas" class="form-control" disabled />
+        @Html.LabelFor(m => m.Vardas, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Vardas, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        <label asp-for="Pavarde" class="control-label">Pavardė:</label>
-        <input asp-for="Pavarde" class="form-control" disabled />
+        @Html.LabelFor(m => m.Pavarde, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Pavarde, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        <label asp-for="GimimoData" class="control-label">Gimimo Data:</label>
-        <input asp-for="GimimoData" class="form-control" disabled />
+        @Html.LabelFor(m => m.GimimoData, new { @class = "control-label" })
+        @Html.EditorFor(m => m.GimimoData, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        <label asp-for="Adresas" class="control-label">Adresas:</label>
-        <input asp-for="Adresas" class="form-control" disabled />
+        @Html.LabelFor(m => m.Adresas, new { @class = "control-label" })
+        @Html.EditorFor(m => m.Adresas, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        <label asp-for="Pareigos" class="control-label">Pareigos:</label>
+        @Html.LabelFor(m => m.Pareigos, new { @class = "control-label", @disabled = "disabled" })
         @foreach (var pareiga in ViewBag.VisosPareigos)
         {
             if (pareiga != null)
@@ -46,7 +49,6 @@
             }
         }
     </div>
-    <button type="submit" class="btn btn-danger">Pašalinti</button>
+    <button type="submit" class="btn btn-danger">Panaikinti</button>
     <a asp-controller="Darbuotojai" asp-action="Pradzia" class="btn btn-secondary">Gryžti</a>
-</form>
-
+}
