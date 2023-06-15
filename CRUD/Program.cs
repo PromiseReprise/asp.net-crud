@@ -1,5 +1,6 @@
 ﻿using CRUD;
 using CRUD.Data;
+using CRUD.Services.Darbuotojai;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<DuomenuKontekstas>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IDarbuotojuService, DarboutojuService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
