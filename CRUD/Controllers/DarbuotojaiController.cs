@@ -1,8 +1,7 @@
-﻿using CRUD.Data;
-using CRUD.Models;
+﻿using CRUD.Models;
 using CRUD.Services.Darbuotojai;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CRUD.Controllers
 {
@@ -15,9 +14,35 @@ namespace CRUD.Controllers
             _servisas = servisas;
         }
 
-        public IActionResult Pradzia(bool? aktyvus, bool? neaktyvus)
+        public IActionResult Pradzia(bool? aktyvus, bool? neaktyvus, string rusiavimoTipas, string paieskosKategorija, string paieskosUzklausa)
         {
-            var duomenys = _servisas.RastiVisus(aktyvus, neaktyvus);
+            var paieskosPavadinimai = new List<string>
+            {
+                "Vardas",
+                "Pavardė",
+                "Gimimo Data",
+                "Adresas",
+                "Pareigos"
+            };
+            ViewBag.PaieskosPavadinimai = new SelectList(paieskosPavadinimai);
+            ViewBag.VardoRusiavimoParam = rusiavimoTipas == "vardas_asc" ? "vardas_desc" : "vardas_asc";
+            ViewBag.PavardesRusiavimoParam = rusiavimoTipas == "pavarde_asc" ? "pavarde_desc" : "pavarde_asc";
+            ViewBag.DatosRusiavimoParam = rusiavimoTipas == "data_asc" ? "data_desc" : "data_asc";
+            ViewBag.AdresoRusiavimoParam = rusiavimoTipas == "adresas_asc" ? "adresas_desc" : "adresas_asc";
+            ViewBag.StatusoRusiavimoParam = rusiavimoTipas == "statusas_akt" ? "statusas_neakt" : "statusas_akt";
+
+            var duomenys = _servisas.RastiVisus();
+
+            if (rusiavimoTipas != null)
+            {
+                duomenys = _servisas.Rusiuoti(duomenys, rusiavimoTipas);
+            }
+
+            if (paieskosUzklausa != null || aktyvus.HasValue || neaktyvus.HasValue)
+            {
+                duomenys = _servisas.Filtruoti(duomenys, paieskosKategorija, paieskosUzklausa, aktyvus, neaktyvus);
+            }
+
             return View(duomenys);
         }
 

@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.rusiavimo-linkas:link, .rusiavimo-linkas:visited, .rusiavimo-linkas:active {
+    color: darkslategray;
+}
+
+.rusiavimo-linkas:hover {
+    color: black;
+    text-decoration: none;
+}

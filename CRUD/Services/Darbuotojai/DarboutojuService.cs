@@ -22,21 +22,10 @@ namespace CRUD.Services.Darbuotojai
             return rastasDarbuotojas;
         }
 
-        public IEnumerable<Darbuotojas> RastiVisus(bool? aktyvus, bool? neaktyvus)
+        public IEnumerable<Darbuotojas> RastiVisus()
         {
             // Pasirinkti visus Darbuotojus
             var darbuotojai = _db.Darbuotojai.Include(s => s.Pareigos).ToList();
-
-            // Patikrinti kurie žymimi langeliai turi vertę ir kokią, pasirenkamas tinkamas Darbuotojas
-            if (aktyvus.HasValue && !aktyvus.Value)
-            {
-                darbuotojai = darbuotojai.Where(e => e.Statusas != 1).ToList();
-            }
-
-            if (neaktyvus.HasValue && !neaktyvus.Value)
-            {
-                darbuotojai = darbuotojai.Where(e => e.Statusas != 0).ToList();
-            }
             return darbuotojai;
         }
 
@@ -98,6 +87,94 @@ namespace CRUD.Services.Darbuotojai
         {
             var visosPareigos = _db.Pareigos.ToList();
             return visosPareigos;
+        }
+
+        public IEnumerable<Darbuotojas> Rusiuoti(IEnumerable<Darbuotojas> darbuotojai, string rusiavimoTipas)
+        {
+            switch (rusiavimoTipas)
+            {
+                case "vardas_asc":
+                    darbuotojai = darbuotojai.OrderBy(x => x.Vardas).ToList();
+                    break;
+                case "vardas_desc":
+                    darbuotojai = darbuotojai.OrderByDescending(x => x.Vardas).ToList();
+                    break;
+
+                case "pavarde_asc":
+                    darbuotojai = darbuotojai.OrderBy(x => x.Pavarde).ToList();
+                    break;
+                case "pavarde_desc":
+                    darbuotojai = darbuotojai.OrderByDescending(x => x.Pavarde).ToList();
+                    break;
+
+                case "data_asc":
+                    darbuotojai = darbuotojai.OrderBy(x => x.GimimoData).ToList();
+                    break;
+                case "data_desc":
+                    darbuotojai = darbuotojai.OrderByDescending(x => x.GimimoData).ToList();
+                    break;
+
+                case "adresas_asc":
+                    darbuotojai = darbuotojai.OrderBy(x => x.Adresas).ToList();
+                    break;
+                case "adresas_desc":
+                    darbuotojai = darbuotojai.OrderByDescending(x => x.Adresas).ToList();
+                    break;
+
+                case "statusas_akt":
+                    darbuotojai = darbuotojai.OrderByDescending(x => x.Statusas).ToList();
+                    break;
+                case "statusas_neakt":
+                    darbuotojai = darbuotojai.OrderBy(x => x.Statusas).ToList();
+                    break;
+            }
+            return darbuotojai;
+        }
+
+        public IEnumerable<Darbuotojas> Filtruoti(IEnumerable<Darbuotojas> darbuotojai, string paieskosKategorija, string paieskosUzklausa, bool? aktyvus, bool? neaktyvus)
+        {
+            // Patikrinti kurie žymimi langeliai turi vertę ir kokią, pasirenkamas tinkamas Darbuotojas
+            if (aktyvus.HasValue && !aktyvus.Value)
+            {
+                darbuotojai = darbuotojai.Where(m => m.Statusas != 1).ToList();
+            }
+
+            if (neaktyvus.HasValue && !neaktyvus.Value)
+            {
+                darbuotojai = darbuotojai.Where(m => m.Statusas != 0).ToList();
+            }
+
+            if (paieskosUzklausa != null)
+            {
+                switch (paieskosKategorija)
+                {
+                    case "Vardas":
+                        darbuotojai = darbuotojai.Where(m => m.Vardas == paieskosUzklausa).ToList();
+                        break;
+                    case "Pavardė":
+                        darbuotojai = darbuotojai.Where(m => m.Pavarde == paieskosUzklausa).ToList();
+                        break;
+                    case "Gimimo Data":
+                        if (DateTime.TryParse(paieskosUzklausa, out DateTime paieskosUzklausaDateTime))
+                        {
+                            darbuotojai = darbuotojai.Where(m => m.GimimoData.Year == paieskosUzklausaDateTime.Year &&
+                                m.GimimoData.Month == paieskosUzklausaDateTime.Month &&
+                                m.GimimoData.Day == paieskosUzklausaDateTime.Day).ToList();
+                        }
+                        else if (int.TryParse(paieskosUzklausa, out int paieskosUzklausaInt))
+                        {
+                            darbuotojai = darbuotojai.Where(m => m.GimimoData.Year == paieskosUzklausaInt).ToList();
+                        }
+                        break;
+                    case "Adresas":
+                        darbuotojai = darbuotojai.Where(m => m.Adresas.IndexOf(paieskosUzklausa, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                        break;
+                    case "Pareigos":
+                        darbuotojai = darbuotojai.Where(m => m.Pareigos.Any(pareiga => pareiga.Pareigos.IndexOf(paieskosUzklausa, StringComparison.OrdinalIgnoreCase) >= 0)).ToList();
+                        break;
+                }
+            }
+            return darbuotojai;
         }
     }
 }

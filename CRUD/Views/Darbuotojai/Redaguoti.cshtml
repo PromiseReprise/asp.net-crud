@@ -48,5 +48,5 @@
         }
     </div>
     <button type="submit" class="btn btn-primary">Koreguoti</button>
-    <a asp-controller="Darbuotojai" asp-action="Pradzia" class="btn btn-secondary">Gryžti</a>
+    @Html.ActionLink("Gryžti", "Pradzia", "Darbuotojai", null, new {@class="btn btn-secondary"})
 }
