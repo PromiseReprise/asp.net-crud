@@ -11,6 +11,7 @@ namespace CRUD.Data
 
         public DbSet<Darbuotojas> Darbuotojai { get; set; } = null!;
         public DbSet<Pareiga> Pareigos { get; set; } = null!;
+        public DbSet<Pacientas> Pacientai { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,6 +19,11 @@ namespace CRUD.Data
                 .HasMany(e => e.Pareigos)
                 .WithMany(e => e.Darbuotojai)
                 .UsingEntity(t => t.ToTable("DarbuotojuPareigos"));
+
+            modelBuilder.Entity<Darbuotojas>()
+                .HasMany(e => e.Pacientai)
+                .WithMany(e => e.Darbuotojai)
+                .UsingEntity(t => t.ToTable("DarbuotojuPacientai"));
         }
     }
 }

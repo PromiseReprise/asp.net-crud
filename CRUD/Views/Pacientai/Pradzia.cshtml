@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Pacientas>
+@{
+    ViewData["Title"] = "Pacientai";
+}
+<div class="text-center">
+    <h1 class="display-4">Pacientai</h1>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Vardas", "Pradzia", "Pacientai",
+                new {rusiavimoTipas = ViewBag.VardoRusiavimoParam},
+                new {@class="rusiavimo-linkas"})
+            </th>
+            <th>
+                @Html.ActionLink("Pavardė", "Pradzia", "Pacientai",
+                new {rusiavimoTipas = ViewBag.PavardesRusiavimoParam},
+                new {@class="rusiavimo-linkas"})
+            </th>
+            <th>
+                @Html.ActionLink("Gimimo Data", "Pradzia", "Pacientai",
+                new {rusiavimoTipas = ViewBag.DatosRusiavimoParam},
+                new {@class="rusiavimo-linkas"})
+            </th>
+            <th>Paskirti Daktarai</th>
+            <th>Valdymas</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model)
+        {
+            var eilutesSpalva = "";
+            if (!obj.Darbuotojai.Any())
+            {
+                eilutesSpalva = "raudona";
+            }
+
+            <tr class="@eilutesSpalva">
+                <td>@obj.Vardas</td>
+                <td>@obj.Pavarde</td>
+                <td>@obj.GimimoData.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @foreach (var daktaras in obj.Darbuotojai)
+                    {
+                        <span>@daktaras.Vardas @daktaras.Pavarde</span><br />
+                    }
+                </td>
+                <td style="width:20%">
+                    @Html.ActionLink("Koreguoti", "Redaguoti", "Pacientai", new {obj.Id}, new {@class="btn btn-warning"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Pridėti pacienta", "Sukurti", "Pacientai", null, new {@class="btn btn-primary"})

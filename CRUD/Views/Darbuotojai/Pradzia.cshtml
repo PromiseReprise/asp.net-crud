@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Darbuotojas>
 @{
-    ViewData["Title"] = "CRUD";
+    ViewData["Title"] = "Darbuotojai";
 }
 <div class="text-center">
     <h1 class="display-4">Darbuotojai</h1>
@@ -63,9 +63,9 @@
                 <td>@obj.Pavarde</td>
                 <td>@obj.GimimoData.ToString("yyyy-MM-dd")</td>
                 <td>@obj.Adresas</td>
-                <td>@foreach (var job in obj.Pareigos)
+                <td>@foreach (var pareiga in obj.Pareigos)
                     {
-                        <span>@job.Pareigos</span><br />
+                        <span>@pareiga.Pareigos</span><br />
                     }
                 </td>
                 <td>@if(obj.Statusas == 1)

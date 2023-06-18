@@ -149,10 +149,10 @@ namespace CRUD.Services.Darbuotojai
                 switch (paieskosKategorija)
                 {
                     case "Vardas":
-                        darbuotojai = darbuotojai.Where(m => m.Vardas == paieskosUzklausa).ToList();
+                        darbuotojai = darbuotojai.Where(m => m.Vardas.ToLower() == paieskosUzklausa.ToLower()).ToList();
                         break;
                     case "Pavardė":
-                        darbuotojai = darbuotojai.Where(m => m.Pavarde == paieskosUzklausa).ToList();
+                        darbuotojai = darbuotojai.Where(m => m.Pavarde.ToLower() == paieskosUzklausa.ToLower()).ToList();
                         break;
                     case "Gimimo Data":
                         if (DateTime.TryParse(paieskosUzklausa, out DateTime paieskosUzklausaDateTime))

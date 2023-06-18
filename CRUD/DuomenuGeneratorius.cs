@@ -10,10 +10,9 @@ namespace CRUD
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
                 var duomenuKontekstas = serviceScope.ServiceProvider.GetService<DuomenuKontekstas>();
-                duomenuKontekstas.Database.EnsureCreated();
                 if (!duomenuKontekstas.Darbuotojai.Any())
                 {
-                    // Pirminiai duomenys
+                    // Pirminiai daktarų duomenys
                     duomenuKontekstas.Darbuotojai.AddRange(new Darbuotojas()
                     {
                         Vardas = "Andrius",
@@ -40,6 +39,17 @@ namespace CRUD
                         Statusas = 1
                     }
                     );
+                    duomenuKontekstas.SaveChanges();
+                }
+                if (!duomenuKontekstas.Pacientai.Any())
+                {
+                    // Pirminiai pacientų duomenys
+                    duomenuKontekstas.Pacientai.AddRange(new Pacientas()
+                    {
+                        Vardas = "Lukas",
+                        Pavarde = "Andrius",
+                        GimimoData = new DateTime(2000, 1, 1)
+                    });
                     duomenuKontekstas.SaveChanges();
                 }
             }

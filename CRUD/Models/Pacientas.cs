@@ -2,7 +2,7 @@
 
 namespace CRUD.Models
 {
-    public class Darbuotojas
+    public class Pacientas
     {
         public int Id { get; set; }
         public string Vardas { get; set; }
@@ -10,9 +10,6 @@ namespace CRUD.Models
         [DataType(DataType.Date, ErrorMessage = "Date only")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime GimimoData { get; set; }
-        public string Adresas { get; set; }
-        public ICollection<Pareiga> Pareigos { get; set;  }
-        public int Statusas { get; set; }
-        public ICollection<Pacientas>? Pacientai { get; set; }
+        public ICollection<Darbuotojas>? Darbuotojai { get; set; }
     }
 }
