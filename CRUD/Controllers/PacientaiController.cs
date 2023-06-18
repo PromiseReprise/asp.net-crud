@@ -1,8 +1,6 @@
 ﻿using CRUD.Models;
-using CRUD.Services.Darbuotojai;
 using CRUD.Services.Pacientai;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CRUD.Controllers
 {
@@ -15,28 +13,25 @@ namespace CRUD.Controllers
             _servisas = servisas;
         }
 
-        public IActionResult Pradzia(string rusiavimoTipas, string paieskosKategorija, string paieskosUzklausa)
+        public IActionResult Pradzia(string rusiavimoTipas)
         {
-            var paieskosPavadinimai = new List<string>
-            {
-                "Vardas",
-                "Pavardė",
-                "Gimimo Data",
-                "Adresas",
-                "Pareigos"
-            };
-            ViewBag.PaieskosPavadinimai = new SelectList(paieskosPavadinimai);
             ViewBag.VardoRusiavimoParam = rusiavimoTipas == "vardas_asc" ? "vardas_desc" : "vardas_asc";
             ViewBag.PavardesRusiavimoParam = rusiavimoTipas == "pavarde_asc" ? "pavarde_desc" : "pavarde_asc";
             ViewBag.DatosRusiavimoParam = rusiavimoTipas == "data_asc" ? "data_desc" : "data_asc";
+
             var duomenys = _servisas.RastiVisus();
 
+            if (rusiavimoTipas != null)
+            {
+                duomenys = _servisas.Rusiuoti(duomenys, rusiavimoTipas);
+            }
+            
             return View(duomenys);
         }
 
         public IActionResult Sukurti()
         {
-            ViewBag.VisiDaktarai = _servisas.RastiDaktarus();
+            ViewBag.Gydytojai = _servisas.RastiGydytojus();
             return View();
         }
 
@@ -45,10 +40,31 @@ namespace CRUD.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (Daktarai == null || Daktarai.Length == 0)
+                {
+                }
                 _servisas.Sukurti(obj, Daktarai);
                 return RedirectToAction("Pradzia");
             }
-            ViewBag.VisosPareigos = _servisas.RastiDaktarus();
+            ViewBag.Gydytojai = _servisas.RastiGydytojus();
+            return View();
+        }
+        public IActionResult Redaguoti(int id)
+        {
+            var koreguojamasDarbuotojas = _servisas.RastiPagalId(id);
+            ViewBag.Gydytojai = _servisas.RastiGydytojus();
+            return View(koreguojamasDarbuotojas);
+        }
+
+        [HttpPost]
+        public IActionResult Redaguoti(Pacientas obj, int[] Pareigos)
+        {
+            if (ModelState.IsValid)
+            {
+                _servisas.Redaguoti(obj, Pareigos);
+                return RedirectToAction("Pradzia");
+            }
+            ViewBag.Gydytojai = _servisas.RastiGydytojus();
             return View();
         }
     }

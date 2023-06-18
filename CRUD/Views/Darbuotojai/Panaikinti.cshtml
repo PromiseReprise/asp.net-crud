@@ -3,29 +3,29 @@
     ViewData["Title"] = "Panaikinti darbuotoja";
 }
 
-@using (Html.BeginForm("PanaikintiPOST", "Darbuotojai", FormMethod.Post))
+@using (Html.BeginForm("PanaikinkDarbuotoja", "Darbuotojai", FormMethod.Post))
 {
     // Id reikalingas perduoti į Post metoda
     @Html.HiddenFor(m => m.Id)
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(m => m.Vardas, new { @class = "control-label" })
+        @Html.Label("Vardas", "Vardas", new { @class = "control-label" })
         @Html.EditorFor(m => m.Vardas, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Pavarde, new { @class = "control-label" })
+        @Html.Label("Pavarde", "Pavardė", new { @class = "control-label" })
         @Html.EditorFor(m => m.Pavarde, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.GimimoData, new { @class = "control-label" })
+        @Html.Label("GimimoData", "Gimimo Data", new { @class = "control-label" })
         @Html.EditorFor(m => m.GimimoData, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Adresas, new { @class = "control-label" })
+        @Html.Label("Adresas", "Adresas", new { @class = "control-label" })
         @Html.EditorFor(m => m.Adresas, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Pareigos, new { @class = "control-label", @disabled = "disabled" })
+        @Html.Label("Pareigos", "Užimamos pareigos", new { @class = "control-label", @disabled = "disabled" })
         @foreach (var pareiga in ViewBag.VisosPareigos)
         {
             if (pareiga != null)

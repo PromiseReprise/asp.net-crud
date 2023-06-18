@@ -50,6 +50,7 @@ namespace CRUD.Controllers
         {
             // Naudojamas ViewBag, kad pasiekti visas Pareigas kurios yra duomenų lentelėje
             ViewBag.VisosPareigos = _servisas.RastiPareigas();
+            // PARTIAL VIEW?
             return View();
         }
 
@@ -92,7 +93,7 @@ namespace CRUD.Controllers
         }
 
         [HttpPost]
-        public IActionResult PanaikintiPOST(int id)
+        public IActionResult PanaikinkDarbuotoja(int id)
         {
             _servisas.Panaikinti(id);
             return RedirectToAction("Pradzia");

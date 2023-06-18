@@ -5,7 +5,10 @@ namespace CRUD.Services.Pacientai
     public interface IPacientuService
     {
         IEnumerable<Pacientas> RastiVisus();
-        ICollection<Darbuotojas> RastiDaktarus();
-        void Sukurti(Pacientas pacientai, int[] Daktarai);
+        Pacientas RastiPagalId(int id);
+        ICollection<Darbuotojas> RastiGydytojus();
+        void Sukurti(Pacientas pacientas, int[] Gydytojai);
+        void Redaguoti(Pacientas pacientas, int[] Gydytojai);
+        IEnumerable<Pacientas> Rusiuoti(IEnumerable<Pacientas> pacientai, string rusiavimoTipas);
     }
 }

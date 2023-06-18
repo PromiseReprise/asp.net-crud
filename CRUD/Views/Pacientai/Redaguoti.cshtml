@@ -1,9 +1,9 @@
-﻿@model Darbuotojas
+﻿@model Pacientas
 @{
-    ViewData["Title"] = "Redaguoti darbuotoja";
+    ViewData["Title"] = "Redaguoti pacientą";
 }
 
-@using (Html.BeginForm("Redaguoti", "Darbuotojai", FormMethod.Post))
+@using (Html.BeginForm("Redaguoti", "Pacientai", FormMethod.Post))
 {
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -19,20 +19,16 @@
         @Html.EditorFor(m => m.GimimoData, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
-        @Html.Label("Adresas", "Adresas", new { @class = "control-label" })
-        @Html.EditorFor(m => m.Adresas, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class="form-group">
-        @Html.Label("Pareigos", "Užimamos pareigos", new { @class = "control-label" })
-        @foreach (var pareiga in ViewBag.VisosPareigos)
+        @Html.Label("Darbuotojai", "Priskiriamas Gydytojas", new { @class = "control-label" })
+        @foreach (var gydytojas in ViewBag.Gydytojai)
         {
-            if (pareiga != null)
+            if (gydytojas != null)
             {
-                if (Model != null && Model.Pareigos.Contains(pareiga))
+                if (Model != null && Model.Darbuotojai.Contains(gydytojas))
                 {
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="Pareigos" value="@pareiga.Id" checked /> @pareiga.Pareigos
+                            <input type="checkbox" name="Pareigos" value="@gydytojas.Id" checked /> @gydytojas.Vardas @gydytojas.Pavarde
                         </label>
                     </div>
                 }
@@ -40,7 +36,7 @@
                 {
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="Pareigos" value="@pareiga.Id" /> @pareiga.Pareigos
+                            <input type="checkbox" name="Pareigos" value="@gydytojas.Id" /> @gydytojas.Vardas @gydytojas.Pavarde
                         </label>
                     </div>
                 }
@@ -48,5 +44,5 @@
         }
     </div>
     <button type="submit" class="btn btn-primary">Koreguoti</button>
-    @Html.ActionLink("Gryžti", "Pradzia", "Darbuotojai", null, new {@class="btn btn-secondary"})
+    @Html.ActionLink("Gryžti", "Pradzia", "Pacientai", null, new {@class="btn btn-secondary"})
 }

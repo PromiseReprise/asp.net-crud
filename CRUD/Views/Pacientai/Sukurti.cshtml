@@ -1,8 +1,8 @@
-﻿@model Darbuotojas
+﻿@model Pacientas
 @{
-    ViewData["Title"] = "Pridėti darbuotoja";
+    ViewData["Title"] = "Pridėti pacientą";
 }
-@using (Html.BeginForm("Sukurti", "Darbuotojai", FormMethod.Post))
+@using (Html.BeginForm("Sukurti", "Pacientai", FormMethod.Post))
 {
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -18,20 +18,16 @@
         @Html.EditorFor(m => m.GimimoData, new { htmlAttributes = new { @class = "form-control" } })
     </div>
     <div class="form-group">
-        @Html.Label("Adresas", "Adresas", new { @class = "control-label" })
-        @Html.EditorFor(m => m.Adresas, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class="form-group">
-        @Html.Label("Pareigos", "Užimamos pareigos", new { @class = "control-label" })
-        @foreach (var pareiga in ViewBag.VisosPareigos)
+        @Html.Label("Darbuotojai", "Priskiriamas Gydytojas", new { @class = "control-label" })
+        @foreach (var gydytojas in ViewBag.Gydytojai)
         {
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="Pareigos" value="@pareiga.Id" /> @pareiga.Pareigos
+                    <input type="checkbox" name="Daktarai" value="@gydytojas.Id" /> @gydytojas.Vardas @gydytojas.Pavarde
                 </label>
             </div>
         }
     </div>
     <button type="submit" class="btn btn-primary">Pridėti</button>
-    @Html.ActionLink("Gryžti", "Pradzia", "Darbuotojai", null, new {@class="btn btn-secondary"})
+    @Html.ActionLink("Gryžti", "Pradzia", "Pacientai", null, new {@class="btn btn-secondary"})
 }
