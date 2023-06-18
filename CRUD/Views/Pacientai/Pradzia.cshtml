@@ -35,6 +35,16 @@
             {
                 eilutesSpalva = "raudona";
             }
+            else
+            {
+                foreach (var darbuotojas in obj.Darbuotojai)
+                {
+                    if (darbuotojas.Statusas == 0)
+                    {
+                        eilutesSpalva = "raudona";
+                    }
+                }
+            }
 
             <tr class="@eilutesSpalva">
                 <td>@obj.Vardas</td>
