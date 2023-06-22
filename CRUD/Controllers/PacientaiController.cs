@@ -29,14 +29,14 @@ namespace CRUD.Controllers
             return View(duomenys);
         }
 
-        public IActionResult Sukurti()
+        public IActionResult GaukSukuriamaPacienta()
         {
             ViewBag.Gydytojai = _servisas.RastiGydytojus();
-            return View();
+            return View("Sukurti");
         }
 
         [HttpPost]
-        public IActionResult Sukurti(Pacientas obj, int[] Daktarai)
+        public IActionResult SukurkPacienta(Pacientas obj, int[] Daktarai)
         {
             if (ModelState.IsValid)
             {
@@ -47,17 +47,17 @@ namespace CRUD.Controllers
                 return RedirectToAction("Pradzia");
             }
             ViewBag.Gydytojai = _servisas.RastiGydytojus();
-            return View();
+            return View("Sukurti");
         }
-        public IActionResult Redaguoti(int id)
+        public IActionResult GaukRedaguojamaPacienta(int id)
         {
             var koreguojamasDarbuotojas = _servisas.RastiPagalId(id);
             ViewBag.Gydytojai = _servisas.RastiGydytojus();
-            return View(koreguojamasDarbuotojas);
+            return View("Redaguoti", koreguojamasDarbuotojas);
         }
 
         [HttpPost]
-        public IActionResult Redaguoti(Pacientas obj, int[] Pareigos)
+        public IActionResult RedaguokPacienta(Pacientas obj, int[] Pareigos)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace CRUD.Controllers
                 return RedirectToAction("Pradzia");
             }
             ViewBag.Gydytojai = _servisas.RastiGydytojus();
-            return View();
+            return View("Redaguoti");
         }
     }
 }

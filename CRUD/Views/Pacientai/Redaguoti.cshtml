@@ -3,8 +3,9 @@
     ViewData["Title"] = "Redaguoti pacientą";
 }
 
-@using (Html.BeginForm("Redaguoti", "Pacientai", FormMethod.Post))
+@using (Html.BeginForm("RedaguokPacienta", "Pacientai", FormMethod.Post))
 {
+    @Html.HiddenFor(m => m.Id)
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.Label("Vardas", "Vardas", new { @class = "control-label" })

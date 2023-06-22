@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Pridėti pacientą";
 }
-@using (Html.BeginForm("Sukurti", "Pacientai", FormMethod.Post))
+@using (Html.BeginForm("SukurkPacienta", "Pacientai", FormMethod.Post))
 {
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">

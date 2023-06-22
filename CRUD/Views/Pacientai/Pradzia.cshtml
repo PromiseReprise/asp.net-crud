@@ -57,10 +57,10 @@
                     }
                 </td>
                 <td style="width:20%">
-                    @Html.ActionLink("Koreguoti", "Redaguoti", "Pacientai", new {obj.Id}, new {@class="btn btn-warning"})
+                    @Html.ActionLink("Koreguoti", "GaukRedaguojamaPacienta", "Pacientai", new {obj.Id}, new {@class="btn btn-warning"})
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@Html.ActionLink("Pridėti pacienta", "Sukurti", "Pacientai", null, new {@class="btn btn-primary"})
+@Html.ActionLink("Pridėti pacienta", "GaukSukuriamaPacienta", "Pacientai", null, new {@class="btn btn-primary"})

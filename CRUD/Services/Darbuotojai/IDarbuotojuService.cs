@@ -16,6 +16,6 @@ namespace CRUD.Services.Darbuotojai
         IEnumerable<Darbuotojas> Rusiuoti(IEnumerable<Darbuotojas> darbuotojai, string rusiavimoTipas);
 
         // Filtravimas
-        IEnumerable<Darbuotojas> Filtruoti(IEnumerable<Darbuotojas> darbuotojai, string paieskosKategorija, string paieskosUzklausa, bool? aktyvus, bool? neaktyvus);
+        IEnumerable<Darbuotojas> Filtruoti(IEnumerable<Darbuotojas> darbuotojai, bool aktyvus, bool neaktyvus, string paieskosKategorija, string paieskosUzklausa);
     }
 }

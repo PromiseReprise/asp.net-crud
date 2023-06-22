@@ -2,6 +2,7 @@
 using CRUD.Services.Darbuotojai;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CRUD.Controllers
 {
@@ -14,7 +15,7 @@ namespace CRUD.Controllers
             _servisas = servisas;
         }
 
-        public IActionResult Pradzia(bool? aktyvus, bool? neaktyvus, string rusiavimoTipas, string paieskosKategorija, string paieskosUzklausa)
+        public IActionResult Pradzia(bool aktyvus, bool neaktyvus, string rusiavimoTipas, string paieskosKategorija, string paieskosUzklausa)
         {
             var paieskosPavadinimai = new List<string>
             {
@@ -38,24 +39,23 @@ namespace CRUD.Controllers
                 duomenys = _servisas.Rusiuoti(duomenys, rusiavimoTipas);
             }
 
-            if (paieskosUzklausa != null || aktyvus.HasValue || neaktyvus.HasValue)
+            if (paieskosUzklausa != null || aktyvus == true || neaktyvus == true)
             {
-                duomenys = _servisas.Filtruoti(duomenys, paieskosKategorija, paieskosUzklausa, aktyvus, neaktyvus);
+                duomenys = _servisas.Filtruoti(duomenys, aktyvus, neaktyvus, paieskosKategorija, paieskosUzklausa);
             }
 
             return View(duomenys);
         }
 
-        public IActionResult Sukurti()
+        public IActionResult GaukSukuriamaDarbuotoja()
         {
             // Naudojamas ViewBag, kad pasiekti visas Pareigas kurios yra duomenų lentelėje
             ViewBag.VisosPareigos = _servisas.RastiPareigas();
-            // PARTIAL VIEW?
-            return View();
+            return View("Sukurti");
         }
 
         [HttpPost]
-        public IActionResult Sukurti(Darbuotojas obj, int[] Pareigos)
+        public IActionResult SukurkDarbuotoja(Darbuotojas obj, int[] Pareigos)
         {
             if (ModelState.IsValid)
             {
@@ -63,18 +63,18 @@ namespace CRUD.Controllers
                 return RedirectToAction("Pradzia");
             }
             ViewBag.VisosPareigos = _servisas.RastiPareigas();
-            return View();
+            return View("Sukurti");
         }
 
-        public IActionResult Redaguoti(int id)
+        public IActionResult GaukRedaguojamaDarbuotoja(int id)
         {
             var koreguojamasDarbuotojas = _servisas.RastiPagalId(id);
             ViewBag.VisosPareigos = _servisas.RastiPareigas();
-            return View(koreguojamasDarbuotojas);
+            return View("Redaguoti", koreguojamasDarbuotojas);
         }
 
         [HttpPost]
-        public IActionResult Redaguoti(Darbuotojas obj, int[] Pareigos)
+        public IActionResult RedaguokDarbuotoja(Darbuotojas obj, int[] Pareigos)
         {
             if (ModelState.IsValid)
             {
@@ -82,14 +82,14 @@ namespace CRUD.Controllers
                 return RedirectToAction("Pradzia");
             }
             ViewBag.VisosPareigos = _servisas.RastiPareigas();
-            return View();
+            return View("Redaguoti");
         }
 
-        public IActionResult Panaikinti(int id)
+        public IActionResult GaukPanaikinamaDarbuotoja(int id)
         {
-            var koreguojamasDarbuotojas = _servisas.RastiPagalId(id);
+            var panaikinamasDarbuotojas = _servisas.RastiPagalId(id);
             ViewBag.VisosPareigos = _servisas.RastiPareigas();
-            return View(koreguojamasDarbuotojas);
+            return View("Panaikinti", panaikinamasDarbuotojas);
         }
 
         [HttpPost]

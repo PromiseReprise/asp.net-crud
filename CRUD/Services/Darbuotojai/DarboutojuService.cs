@@ -1,5 +1,6 @@
 ﻿using CRUD.Data;
 using CRUD.Models;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD.Services.Darbuotojai
@@ -64,14 +65,12 @@ namespace CRUD.Services.Darbuotojai
                     koreguojamasDarbuotojas.Pareigos.Add(pareiga);
                 }
             }
-            // Šią dalį pakeisti
             koreguojamasDarbuotojas.Vardas = darbuotojas.Vardas;
             koreguojamasDarbuotojas.Pavarde = darbuotojas.Pavarde;
             koreguojamasDarbuotojas.GimimoData = darbuotojas.GimimoData;
             koreguojamasDarbuotojas.Adresas = darbuotojas.Adresas;
             koreguojamasDarbuotojas.Statusas = 1;
 
-            // Metodas Update atvaizduoja klaidą, kai yra perduodamas obj kintamasis
             _db.Darbuotojai.Update(koreguojamasDarbuotojas);
             _db.SaveChanges();
         }
@@ -131,47 +130,55 @@ namespace CRUD.Services.Darbuotojai
             return darbuotojai;
         }
 
-        public IEnumerable<Darbuotojas> Filtruoti(IEnumerable<Darbuotojas> darbuotojai, string paieskosKategorija, string paieskosUzklausa, bool? aktyvus, bool? neaktyvus)
+        public IEnumerable<Darbuotojas> Filtruoti(IEnumerable<Darbuotojas> darbuotojai, bool aktyvus, bool neaktyvus, string paieskosKategorija, string paieskosUzklausa)
         {
             // Patikrinti kurie žymimi langeliai turi vertę ir kokią, pasirenkamas tinkamas Darbuotojas
-            if (aktyvus.HasValue && !aktyvus.Value)
+            if (aktyvus)
             {
-                darbuotojai = darbuotojai.Where(m => m.Statusas != 1).ToList();
+                darbuotojai = darbuotojai.Where(m => m.Statusas == 1).ToList();
             }
 
-            if (neaktyvus.HasValue && !neaktyvus.Value)
+            if (neaktyvus)
             {
-                darbuotojai = darbuotojai.Where(m => m.Statusas != 0).ToList();
+                darbuotojai = darbuotojai.Where(m => m.Statusas == 0).ToList();
+            }
+
+            if (!aktyvus && !neaktyvus || aktyvus && neaktyvus)
+            {
+                darbuotojai = RastiVisus();
             }
 
             if (paieskosUzklausa != null)
             {
-                switch (paieskosKategorija)
+                if(paieskosKategorija != null)
                 {
-                    case "Vardas":
-                        darbuotojai = darbuotojai.Where(m => m.Vardas.ToLower() == paieskosUzklausa.ToLower()).ToList();
-                        break;
-                    case "Pavardė":
-                        darbuotojai = darbuotojai.Where(m => m.Pavarde.ToLower() == paieskosUzklausa.ToLower()).ToList();
-                        break;
-                    case "Gimimo Data":
-                        if (DateTime.TryParse(paieskosUzklausa, out DateTime paieskosUzklausaDateTime))
-                        {
-                            darbuotojai = darbuotojai.Where(m => m.GimimoData.Year == paieskosUzklausaDateTime.Year &&
-                                m.GimimoData.Month == paieskosUzklausaDateTime.Month &&
-                                m.GimimoData.Day == paieskosUzklausaDateTime.Day).ToList();
-                        }
-                        else if (int.TryParse(paieskosUzklausa, out int paieskosUzklausaInt))
-                        {
-                            darbuotojai = darbuotojai.Where(m => m.GimimoData.Year == paieskosUzklausaInt).ToList();
-                        }
-                        break;
-                    case "Adresas":
-                        darbuotojai = darbuotojai.Where(m => m.Adresas.IndexOf(paieskosUzklausa, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
-                        break;
-                    case "Pareigos":
-                        darbuotojai = darbuotojai.Where(m => m.Pareigos.Any(pareiga => pareiga.Pareigos.IndexOf(paieskosUzklausa, StringComparison.OrdinalIgnoreCase) >= 0)).ToList();
-                        break;
+                    switch (paieskosKategorija)
+                    {
+                        case "Vardas":
+                            darbuotojai = darbuotojai.Where(m => m.Vardas.ToLower() == paieskosUzklausa.ToLower()).ToList();
+                            break;
+                        case "Pavardė":
+                            darbuotojai = darbuotojai.Where(m => m.Pavarde.ToLower() == paieskosUzklausa.ToLower()).ToList();
+                            break;
+                        case "Gimimo Data":
+                            if (DateTime.TryParse(paieskosUzklausa, out DateTime paieskosUzklausaDateTime))
+                            {
+                                darbuotojai = darbuotojai.Where(m => m.GimimoData.Year == paieskosUzklausaDateTime.Year &&
+                                    m.GimimoData.Month == paieskosUzklausaDateTime.Month &&
+                                    m.GimimoData.Day == paieskosUzklausaDateTime.Day).ToList();
+                            }
+                            else if (int.TryParse(paieskosUzklausa, out int paieskosUzklausaInt))
+                            {
+                                darbuotojai = darbuotojai.Where(m => m.GimimoData.Year == paieskosUzklausaInt).ToList();
+                            }
+                            break;
+                        case "Adresas":
+                            darbuotojai = darbuotojai.Where(m => m.Adresas.IndexOf(paieskosUzklausa, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                            break;
+                        case "Pareigos":
+                            darbuotojai = darbuotojai.Where(m => m.Pareigos.Any(pareiga => pareiga.Pareigos.IndexOf(paieskosUzklausa, StringComparison.OrdinalIgnoreCase) >= 0)).ToList();
+                            break;
+                    }
                 }
             }
             return darbuotojai;
